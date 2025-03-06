@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuiz, QuizUser } from '../contexts/QuizContext';
-import { Award, Clock, User, LogOut, BarChart, Users as UsersIcon } from 'lucide-react';
+import { Award, Clock, User, LogOut, BarChart, Users as UsersIcon, Trash } from 'lucide-react';
 
 const AdminPage: React.FC = () => {
-  const { users } = useQuiz();
+  const { users, setUsers } = useQuiz();
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);
   
@@ -48,7 +48,18 @@ const AdminPage: React.FC = () => {
     }
     return a.timeSpent - b.timeSpent; // Lower time first if scores are equal
   });
-  
+
+  // Handle delete user
+  const handleDeleteUser = (userId: number) => {
+    const updatedUsers = users.filter(user => user.id !== userId);
+    setUsers(updatedUsers);
+  };
+
+  // Check for duplicate user names
+  const isDuplicateUser = (userName: string): boolean => {
+    return users.some(user => user.name === userName);
+  };
+
   if (!isAdmin) {
     return null; // Don't render anything if not admin
   }
@@ -118,10 +129,11 @@ const AdminPage: React.FC = () => {
                 <div className="bg-gray-50 rounded-lg overflow-hidden">
                   <div className="grid grid-cols-12 bg-blue-500 text-white p-3 text-sm font-medium">
                     <div className="col-span-1 text-center">#</div>
-                    <div className="col-span-5">Usuário</div>
+                    <div className="col-span-4">Usuário</div>
                     <div className="col-span-2 text-center">Pontos</div>
                     <div className="col-span-2 text-center">Tempo</div>
                     <div className="col-span-2 text-center">Data</div>
+                    <div className="col-span-1 text-center">Ações</div>
                   </div>
                   
                   {sortedUsers.map((user, index) => (
@@ -130,7 +142,7 @@ const AdminPage: React.FC = () => {
                       className="grid grid-cols-12 p-3 text-sm border-b border-gray-200 hover:bg-gray-100"
                     >
                       <div className="col-span-1 text-center font-medium">{index + 1}</div>
-                      <div className="col-span-5 flex items-center">
+                      <div className="col-span-4 flex items-center">
                         <img 
                           src={user.avatar} 
                           alt={user.name} 
@@ -142,6 +154,14 @@ const AdminPage: React.FC = () => {
                       <div className="col-span-2 text-center text-gray-600">{formatTime(user.timeSpent)}</div>
                       <div className="col-span-2 text-center text-gray-600">
                         {new Date().toLocaleDateString()}
+                      </div>
+                      <div className="col-span-1 text-center">
+                        <button
+                          onClick={() => handleDeleteUser(user.id)}
+                          className="text-red-600 hover:text-red-800 transition-colors duration-200"
+                        >
+                          <Trash className="h-5 w-5" />
+                        </button>
                       </div>
                     </div>
                   ))}
