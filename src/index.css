@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #3B82F6;
+  --color-white: #FFFFFF;
+  --color-red: #EF4444;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  @apply bg-white text-gray-800;
+}
+
+.btn {
+  @apply px-4 py-2 rounded-md font-medium transition-all duration-200;
+}
+
+.btn-primary {
+  @apply bg-blue-500 text-white hover:bg-blue-600;
+}
+
+.btn-secondary {
+  @apply bg-red-500 text-white hover:bg-red-600;
+}
+
+.container-custom {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.card {
+  @apply bg-white rounded-lg shadow-md overflow-hidden;
+}
+
+.quiz-option {
+  @apply p-3 border border-gray-300 rounded-md cursor-pointer transition-all duration-200;
+}
+
+.quiz-option:hover {
+  @apply border-blue-500 bg-blue-50;
+}
+
+.quiz-option.selected {
+  @apply border-blue-500 bg-blue-100;
+}
+
+.quiz-option.correct {
+  @apply border-green-500 bg-green-100;
+}
+
+.quiz-option.incorrect {
+  @apply border-red-500 bg-red-100;
+}
+
+.nav-link {
+  @apply px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200;
+}
+
+.nav-link-active {
+  @apply bg-blue-100 text-blue-700;
+}
+
+.nav-link:hover {
+  @apply bg-blue-50 text-blue-600;
+}
