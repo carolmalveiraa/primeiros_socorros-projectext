@@ -1,14 +1,22 @@
+// filepath: [AdminPage.tsx](http://_vscodecontentref_/3)
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQuiz, QuizUser } from '../contexts/QuizContext';
+import axios from 'axios';
 import { Award, Clock, User, LogOut, BarChart, Users as UsersIcon, Trash } from 'lucide-react';
 
+interface User {
+  id: number;
+  name: string;
+  score: number;
+  timeSpent: number;
+  avatar: string;
+}
+
 const AdminPage: React.FC = () => {
-  const { users, setUsers } = useQuiz();
+  const [users, setUsers] = useState<User[]>([]);
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);
-  
-  // Check if user is admin on component mount
+
   useEffect(() => {
     const adminStatus = sessionStorage.getItem('isAdmin');
     if (adminStatus !== 'true') {
@@ -17,58 +25,68 @@ const AdminPage: React.FC = () => {
       setIsAdmin(true);
     }
   }, [navigate]);
-  
-  // Handle logout
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/users');
+        setUsers(response.data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
   const handleLogout = () => {
     sessionStorage.removeItem('isAdmin');
     navigate('/login');
   };
-  
-  // Format time (seconds to MM:SS)
+
   const formatTime = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
-  
-  // Calculate average time
+
   const calculateAverageTime = (): string => {
     if (users.length === 0) return '00:00';
-    
+
     const totalTime = users.reduce((acc, user) => acc + user.timeSpent, 0);
     const averageSeconds = Math.floor(totalTime / users.length);
-    
+
     return formatTime(averageSeconds);
   };
-  
-  // Sort users by score (descending) and time (ascending)
+
   const sortedUsers = [...users].sort((a, b) => {
     if (b.score !== a.score) {
-      return b.score - a.score; // Higher score first
+      return b.score - a.score;
     }
-    return a.timeSpent - b.timeSpent; // Lower time first if scores are equal
+    return a.timeSpent - b.timeSpent;
   });
 
-  // Handle delete user
-  const handleDeleteUser = (userId: number) => {
-    const updatedUsers = users.filter(user => user.id !== userId);
-    setUsers(updatedUsers);
+  const handleDeleteUser = async (userId: number) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/users/${userId}`);
+      setUsers(users.filter(user => user.id !== userId));
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
   };
 
-  // Check for duplicate user names
   const isDuplicateUser = (userName: string): boolean => {
     return users.some(user => user.name === userName);
   };
 
   if (!isAdmin) {
-    return null; // Don't render anything if not admin
+    return null;
   }
-  
+
   return (
     <div className="py-8 bg-gray-50 min-h-screen">
       <div className="container-custom">
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          {/* Admin Header */}
           <div className="bg-blue-500 text-white p-6 flex justify-between items-center">
             <h1 className="text-2xl font-bold">Painel do Administrador</h1>
             <button
@@ -79,8 +97,7 @@ const AdminPage: React.FC = () => {
               Sair
             </button>
           </div>
-          
-          {/* Stats Cards */}
+
           <div className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               <div className="bg-blue-50 rounded-lg p-6 flex items-center">
@@ -92,7 +109,7 @@ const AdminPage: React.FC = () => {
                   <p className="text-2xl font-bold text-blue-700">{users.length}</p>
                 </div>
               </div>
-              
+
               <div className="bg-green-50 rounded-lg p-6 flex items-center">
                 <div className="bg-green-100 p-3 rounded-full mr-4">
                   <Award className="h-6 w-6 text-green-600" />
@@ -106,7 +123,7 @@ const AdminPage: React.FC = () => {
                   </p>
                 </div>
               </div>
-              
+
               <div className="bg-red-50 rounded-lg p-6 flex items-center">
                 <div className="bg-red-100 p-3 rounded-full mr-4">
                   <Clock className="h-6 w-6 text-red-600" />
@@ -117,14 +134,13 @@ const AdminPage: React.FC = () => {
                 </div>
               </div>
             </div>
-            
-            {/* Ranking Table */}
+
             <div className="mb-8">
               <h2 className="text-xl font-semibold mb-4 flex items-center">
                 <BarChart className="h-5 w-5 mr-2 text-blue-500" />
                 Ranking Completo
               </h2>
-              
+
               {users.length > 0 ? (
                 <div className="bg-gray-50 rounded-lg overflow-hidden">
                   <div className="grid grid-cols-12 bg-blue-500 text-white p-3 text-sm font-medium">
@@ -135,7 +151,7 @@ const AdminPage: React.FC = () => {
                     <div className="col-span-2 text-center">Data</div>
                     <div className="col-span-1 text-center">Ações</div>
                   </div>
-                  
+
                   {sortedUsers.map((user, index) => (
                     <div 
                       key={index}

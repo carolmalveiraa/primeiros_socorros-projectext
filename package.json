@@ -16,6 +16,7 @@
     "@tailwindcss/vite": "^4.0.9",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
+    "axios": "^1.8.1",
     "lucide-react": "^0.344.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -38,5 +39,18 @@
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.3.0",
     "vite": "^6.2.0"
-  }
+  },
+  "description": "Este projeto de extensão foi desenvolvido em parceria com a **Nordeste Emergências** para oferecer um curso interativo sobre **primeiros socorros**. A plataforma é moderna, responsiva e educativa, contando com um quiz interativo para reforçar o aprendizado.",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carolmalveiraa/primeiros_socorros-projectext.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/carolmalveiraa/primeiros_socorros-projectext/issues"
+  },
+  "homepage": "https://github.com/carolmalveiraa/primeiros_socorros-projectext#readme"
 }
