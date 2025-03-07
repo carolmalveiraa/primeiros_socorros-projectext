@@ -7,7 +7,8 @@ export const getUsers = async (req: Request, res: Response) => {
     const result = await pool.query('SELECT * FROM users');
     res.json(result.rows);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    const error = err as Error;
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -17,6 +18,7 @@ export const deleteUser = async (req: Request, res: Response) => {
     await pool.query('DELETE FROM users WHERE id = $1', [id]);
     res.status(204).send();
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    const error = err as Error;
+    res.status(500).json({ error: error.message });
   }
 };
