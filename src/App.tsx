@@ -9,6 +9,7 @@ import AdminPage from './pages/AdminPage';
 import LoginPage from './pages/LoginPage';
 import { QuizProvider } from './contexts/QuizContext';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from "@vercel/speed-insights/react"
 function App() {
   return (
     <div className="flex flex-col min-h-screen">
@@ -23,6 +24,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
           </Routes>
           <Analytics />
+          <SpeedInsights />
         </QuizProvider>
       </main>
       <Footer />
