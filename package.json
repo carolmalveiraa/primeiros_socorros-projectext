@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@neondatabase/api-client": "^1.13.0",
+    "@neondatabase/serverless": "^0.10.4",
     "@tailwindcss/vite": "^4.0.9",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
