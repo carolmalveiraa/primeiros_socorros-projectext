@@ -8,6 +8,6 @@ export default defineConfig({
     exclude: ['lucide-react'],
   },
   server: {
-    allowedHosts: ["a945-206-42-26-204.ngrok-free.app", "all"],
+    allowedHosts: ["localhost", "all"],
   },
 });
