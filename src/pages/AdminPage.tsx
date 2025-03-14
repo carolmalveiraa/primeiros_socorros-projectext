@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuiz, QuizUser } from '../contexts/QuizContext';
-import { Award, Clock, User, LogOut, BarChart, Users as UsersIcon, Trash } from 'lucide-react';
+import { Award, Clock, User, LogOut, BarChart, Users as UsersIcon, Trash, Edit } from 'lucide-react';
 
 const AdminPage: React.FC = () => {
   const { users, setUsers } = useQuiz();
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);
-  
-  // Check if user is admin on component mount
+  const [editingUser, setEditingUser] = useState<QuizUser | null>(null);
+  const [userName, setUserName] = useState('');
+  const [userScore, setUserScore] = useState(0);
+  const [userTimeSpent, setUserTimeSpent] = useState(0);
+
   useEffect(() => {
     const adminStatus = sessionStorage.getItem('isAdmin');
     if (adminStatus !== 'true') {
@@ -17,58 +20,76 @@ const AdminPage: React.FC = () => {
       setIsAdmin(true);
     }
   }, [navigate]);
-  
-  // Handle logout
+
   const handleLogout = () => {
     sessionStorage.removeItem('isAdmin');
     navigate('/login');
   };
-  
-  // Format time (seconds to MM:SS)
+
   const formatTime = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
-  
-  // Calculate average time
+
   const calculateAverageTime = (): string => {
     if (users.length === 0) return '00:00';
-    
     const totalTime = users.reduce((acc, user) => acc + user.timeSpent, 0);
     const averageSeconds = Math.floor(totalTime / users.length);
-    
     return formatTime(averageSeconds);
   };
-  
-  // Sort users by score (descending) and time (ascending)
+
   const sortedUsers = [...users].sort((a, b) => {
     if (b.score !== a.score) {
-      return b.score - a.score; // Higher score first
+      return b.score - a.score;
     }
-    return a.timeSpent - b.timeSpent; // Lower time first if scores are equal
+    return a.timeSpent - b.timeSpent;
   });
 
-  // Handle delete user
   const handleDeleteUser = (userId: number) => {
     const updatedUsers = users.filter(user => user.id !== userId);
     setUsers(updatedUsers);
   };
 
-  // Check for duplicate user names
-  const isDuplicateUser = (userName: string): boolean => {
-    return users.some(user => user.name === userName);
+  const handleEditUser = (user: QuizUser) => {
+    setEditingUser(user);
+    setUserName(user.name);
+    setUserScore(user.score);
+    setUserTimeSpent(user.timeSpent);
+  };
+
+  const handleSaveUser = () => {
+    if (editingUser) {
+      const updatedUsers = users.map(user =>
+        user.id === editingUser.id
+          ? { ...user, name: userName, score: userScore, timeSpent: userTimeSpent }
+          : user
+      );
+      setUsers(updatedUsers);
+      setEditingUser(null);
+    } else {
+      const newUser: QuizUser = {
+        id: users.length + 1,
+        name: userName,
+        score: userScore,
+        timeSpent: userTimeSpent,
+        avatar: 'default-avatar.png', // Adicione um avatar padrão
+      };
+      setUsers([...users, newUser]);
+    }
+    setUserName('');
+    setUserScore(0);
+    setUserTimeSpent(0);
   };
 
   if (!isAdmin) {
-    return null; // Don't render anything if not admin
+    return null;
   }
-  
+
   return (
     <div className="py-8 bg-gray-50 min-h-screen">
       <div className="container-custom">
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          {/* Admin Header */}
           <div className="bg-blue-500 text-white p-6 flex justify-between items-center">
             <h1 className="text-2xl font-bold">Painel do Administrador</h1>
             <button
@@ -79,8 +100,7 @@ const AdminPage: React.FC = () => {
               Sair
             </button>
           </div>
-          
-          {/* Stats Cards */}
+
           <div className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               <div className="bg-blue-50 rounded-lg p-6 flex items-center">
@@ -92,7 +112,7 @@ const AdminPage: React.FC = () => {
                   <p className="text-2xl font-bold text-blue-700">{users.length}</p>
                 </div>
               </div>
-              
+
               <div className="bg-green-50 rounded-lg p-6 flex items-center">
                 <div className="bg-green-100 p-3 rounded-full mr-4">
                   <Award className="h-6 w-6 text-green-600" />
@@ -100,13 +120,13 @@ const AdminPage: React.FC = () => {
                 <div>
                   <p className="text-sm text-gray-600">Pontuação Média</p>
                   <p className="text-2xl font-bold text-green-700">
-                    {users.length > 0 
-                      ? (users.reduce((acc, user) => acc + user.score, 0) / users.length).toFixed(1) 
+                    {users.length > 0
+                      ? (users.reduce((acc, user) => acc + user.score, 0) / users.length).toFixed(1)
                       : '0'}
                   </p>
                 </div>
               </div>
-              
+
               <div className="bg-red-50 rounded-lg p-6 flex items-center">
                 <div className="bg-red-100 p-3 rounded-full mr-4">
                   <Clock className="h-6 w-6 text-red-600" />
@@ -117,14 +137,13 @@ const AdminPage: React.FC = () => {
                 </div>
               </div>
             </div>
-            
-            {/* Ranking Table */}
+
             <div className="mb-8">
               <h2 className="text-xl font-semibold mb-4 flex items-center">
                 <BarChart className="h-5 w-5 mr-2 text-blue-500" />
                 Ranking Completo
               </h2>
-              
+
               {users.length > 0 ? (
                 <div className="bg-gray-50 rounded-lg overflow-hidden">
                   <div className="grid grid-cols-12 bg-blue-500 text-white p-3 text-sm font-medium">
@@ -135,17 +154,17 @@ const AdminPage: React.FC = () => {
                     <div className="col-span-2 text-center">Data</div>
                     <div className="col-span-1 text-center">Ações</div>
                   </div>
-                  
+
                   {sortedUsers.map((user, index) => (
-                    <div 
+                    <div
                       key={index}
                       className="grid grid-cols-12 p-3 text-sm border-b border-gray-200 hover:bg-gray-100"
                     >
                       <div className="col-span-1 text-center font-medium">{index + 1}</div>
                       <div className="col-span-4 flex items-center">
-                        <img 
-                          src={user.avatar} 
-                          alt={user.name} 
+                        <img
+                          src={user.avatar}
+                          alt={user.name}
                           className="w-8 h-8 rounded-full mr-2"
                         />
                         <span>{user.name}</span>
@@ -155,7 +174,13 @@ const AdminPage: React.FC = () => {
                       <div className="col-span-2 text-center text-gray-600">
                         {new Date().toLocaleDateString()}
                       </div>
-                      <div className="col-span-1 text-center">
+                      <div className="col-span-1 text-center flex justify-center items-center space-x-2">
+                        <button
+                          onClick={() => handleEditUser(user)}
+                          className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                        >
+                          <Edit className="h-5 w-5" />
+                        </button>
                         <button
                           onClick={() => handleDeleteUser(user.id)}
                           className="text-red-600 hover:text-red-800 transition-colors duration-200"
@@ -173,6 +198,78 @@ const AdminPage: React.FC = () => {
                   <p className="mt-1">Os resultados aparecerão aqui quando os usuários completarem o quiz.</p>
                 </div>
               )}
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <h2 className="text-xl font-semibold mb-4">{editingUser ? 'Editar Usuário' : 'Adicionar Usuário'}</h2>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSaveUser();
+                }}
+              >
+                <div className="mb-4">
+                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="userName">
+                    Nome do Usuário
+                  </label>
+                  <input
+                    id="userName"
+                    type="text"
+                    value={userName}
+                    onChange={(e) => setUserName(e.target.value)}
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    required
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="userScore">
+                    Pontuação
+                  </label>
+                  <input
+                    id="userScore"
+                    type="number"
+                    value={userScore}
+                    onChange={(e) => setUserScore(Number(e.target.value))}
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    required
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="userTimeSpent">
+                    Tempo Gasto (segundos)
+                  </label>
+                  <input
+                    id="userTimeSpent"
+                    type="number"
+                    value={userTimeSpent}
+                    onChange={(e) => setUserTimeSpent(Number(e.target.value))}
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    required
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <button
+                    type="submit"
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  >
+                    {editingUser ? 'Salvar Alterações' : 'Adicionar Usuário'}
+                  </button>
+                  {editingUser && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEditingUser(null);
+                        setUserName('');
+                        setUserScore(0);
+                        setUserTimeSpent(0);
+                      }}
+                      className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    >
+                      Cancelar
+                    </button>
+                  )}
+                </div>
+              </form>
             </div>
           </div>
         </div>
