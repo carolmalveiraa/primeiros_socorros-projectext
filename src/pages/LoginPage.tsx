@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '../supabase';
 import { Lock, User } from 'lucide-react';
 
 const LoginPage: React.FC = () => {
@@ -8,22 +9,34 @@ const LoginPage: React.FC = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Simple validation
+
+    // Validação simples
     if (!username || !password) {
       setError('Por favor, preencha todos os campos.');
       return;
     }
-    
-    // Check admin credentials (hardcoded for this example)
-    if (username === 'adminne' && password === 'nordesteadmin') {
-      // Store admin status in session storage
-      sessionStorage.setItem('isAdmin', 'true');
-      navigate('/admin');
-    } else {
-      setError('Credenciais inválidas. Tente novamente.');
+
+    try {
+      // Verificar credenciais no Supabase
+      const { data, error } = await supabase
+        .from('admins') // Nome da tabela está correto
+        .select('*')
+        .eq('username', username) // Nome da coluna está correto
+        .eq('password', password) // Nome da coluna está correto
+        .single();
+
+      if (error || !data) {
+        setError('Credenciais inválidas. Tente novamente.');
+      } else {
+        // Armazenar status de administrador no sessionStorage
+        sessionStorage.setItem('isAdmin', 'true');
+        navigate('/admin');
+      }
+    } catch (err) {
+      console.error('Erro ao autenticar:', err);
+      setError('Ocorreu um erro ao tentar fazer login. Tente novamente mais tarde.');
     }
   };
 
@@ -35,14 +48,14 @@ const LoginPage: React.FC = () => {
             <h1 className="text-2xl font-bold">Área do Administrador</h1>
             <p className="text-sm mt-1">Faça login para acessar o painel administrativo</p>
           </div>
-          
+
           <div className="p-6">
             {error && (
               <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6">
                 <p>{error}</p>
               </div>
             )}
-            
+
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label htmlFor="username" className="block text-gray-700 font-medium mb-2">
@@ -62,7 +75,7 @@ const LoginPage: React.FC = () => {
                   />
                 </div>
               </div>
-              
+
               <div className="mb-6">
                 <label htmlFor="password" className="block text-gray-700 font-medium mb-2">
                   Senha
@@ -84,7 +97,7 @@ const LoginPage: React.FC = () => {
                   Solicite suas credenciais aos administradores.
                 </p>
               </div>
-              
+
               <button
                 type="submit"
                 className="w-full py-3 bg-blue-500 text-white rounded-md font-medium hover:bg-blue-600 transition-colors duration-200"
