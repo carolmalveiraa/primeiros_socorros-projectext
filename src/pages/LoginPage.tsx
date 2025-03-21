@@ -12,26 +12,22 @@ const LoginPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validação simples
     if (!username || !password) {
       setError('Por favor, preencha todos os campos.');
       return;
     }
 
     try {
-      // Verificar credenciais no Supabase
       const { data, error } = await supabase
-        .from('admins') // Nome da tabela está correto
+        .from('admins')
         .select('*')
-        .eq('username', username) // Nome da coluna está correto
-        .eq('password', password) // Nome da coluna está correto
+        .eq('username', username)
+        .eq('password', password)
         .single();
 
       if (error || !data) {
         setError('Credenciais inválidas. Tente novamente.');
       } else {
-        // Armazenar status de administrador no sessionStorage
-        sessionStorage.setItem('isAdmin', 'true');
         navigate('/admin');
       }
     } catch (err) {
