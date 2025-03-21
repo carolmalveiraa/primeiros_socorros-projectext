@@ -13,7 +13,7 @@ const AdminPage: React.FC = () => {
   const [userTimeSpent, setUserTimeSpent] = useState(0);
 
   useEffect(() => {
-    const adminStatus = sessionStorage.getItem('isAdmin');
+    const adminStatus = localStorage.getItem('isAdmin');
     if (adminStatus !== 'true') {
       navigate('/login');
     } else {
@@ -22,7 +22,7 @@ const AdminPage: React.FC = () => {
   }, [navigate]);
 
   const handleLogout = () => {
-    sessionStorage.removeItem('isAdmin');
+    localStorage.removeItem('isAdmin');
     navigate('/login');
   };
 
@@ -69,11 +69,11 @@ const AdminPage: React.FC = () => {
       setEditingUser(null);
     } else {
       const newUser: QuizUser = {
-        id: users.length + 1,
+        id: Date.now(), // Garante um ID único
         name: userName,
         score: userScore,
         timeSpent: userTimeSpent,
-        avatar: 'default-avatar.png', // Adicione um avatar padrão
+        avatar: 'default-avatar.png',
       };
       setUsers([...users, newUser]);
     }
