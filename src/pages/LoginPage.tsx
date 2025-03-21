@@ -71,6 +71,7 @@ const LoginPage: React.FC = () => {
                     onChange={(e) => setUsername(e.target.value)}
                     className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Digite seu usuário"
+                    autoComplete="username" // Corrigido
                   />
                 </div>
               </div>
@@ -90,6 +91,7 @@ const LoginPage: React.FC = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Digite sua senha"
+                    autoComplete="current-password" // Corrigido
                   />
                 </div>
                 <p className="text-center text-sm text-gray-500 mt-2">
