@@ -25,9 +25,12 @@ const LoginPage: React.FC = () => {
         .eq('password', password)
         .single();
 
+      console.log('Dados do login:', data); // Verifica os dados retornados
+
       if (error || !data) {
         setError('Credenciais inválidas. Tente novamente.');
       } else {
+        localStorage.setItem('isAdmin', 'true'); // Persistir estado de autenticação
         navigate('/admin');
       }
     } catch (err) {

@@ -20,6 +20,8 @@ const AdminPage: React.FC = () => {
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
 
+      console.log('Sessão recuperada:', session); // Verifica se a sessão foi recuperada
+
       if (!session) {
         navigate('/login'); // Redireciona para login se não houver sessão
       } else {
@@ -36,6 +38,7 @@ const AdminPage: React.FC = () => {
       if (error) {
         console.error('Erro ao buscar usuários:', error);
       } else {
+        console.log('Usuários recuperados:', data); // Verifica os dados recuperados
         setUsers(data || []);
       }
     };
@@ -44,12 +47,12 @@ const AdminPage: React.FC = () => {
   }, []);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut(); // Encerra a sessão no Supabase
+    localStorage.removeItem('isAdmin'); // Remove o estado de autenticação
     navigate('/login');
   };
 
   if (!isAdmin) {
-    return null;
+    return null; // Evita renderizar a página enquanto verifica a autenticação
   }
 
   return (
