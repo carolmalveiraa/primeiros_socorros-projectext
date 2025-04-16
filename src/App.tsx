@@ -11,21 +11,22 @@ import { QuizProvider } from './contexts/QuizContext';
 
 function App() {
   return (
-    <div className="flex flex-col min-h-screen">
-      <Navbar />
-      <main className="flex-grow">
-        <QuizProvider>
+    <QuizProvider>
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+        <main className="flex-grow">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/curso" element={<CoursePage />} />
             <Route path="/quiz" element={<QuizPage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="*" element={<div>Página não encontrada</div>} />
           </Routes>
-        </QuizProvider>
-      </main>
-      <Footer />
-    </div>
+        </main>
+        <Footer />
+      </div>
+    </QuizProvider>
   );
 }
 

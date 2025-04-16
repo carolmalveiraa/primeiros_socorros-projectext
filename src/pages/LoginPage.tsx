@@ -32,8 +32,8 @@ const LoginPage: React.FC = () => {
         return;
       }
     
-      localStorage.setItem('isAdmin', 'true');
-      navigate('/admin');
+      sessionStorage.setItem('token', result.token);
+navigate('/admin');
     } catch (error) {
       console.error('Erro ao fazer login:', error);
       setError('Erro no servidor. Tente novamente mais tarde.');
