@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../supabase';
 import { Lock, User } from 'lucide-react';
 
 const LoginPage: React.FC = () => {
@@ -18,24 +17,26 @@ const LoginPage: React.FC = () => {
     }
 
     try {
-      const { data, error } = await supabase
-        .from('admins')
-        .select('*')
-        .eq('username', username)
-        .eq('password', password)
-        .single();
-
-      console.log('Dados do login:', data); // Verifica os dados retornados
-
-      if (error || !data) {
-        setError('Credenciais inválidas. Tente novamente.');
-      } else {
-        localStorage.setItem('isAdmin', 'true'); // Persistir estado de autenticação
-        navigate('/admin');
+      const res = await fetch('http://localhost:3001/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+    
+      const result = await res.json();
+    
+      if (!res.ok) {
+        setError(result.message || 'Erro no login.');
+        return;
       }
-    } catch (err) {
-      console.error('Erro ao autenticar:', err);
-      setError('Ocorreu um erro ao tentar fazer login. Tente novamente mais tarde.');
+    
+      localStorage.setItem('isAdmin', 'true');
+      navigate('/admin');
+    } catch (error) {
+      console.error('Erro ao fazer login:', error);
+      setError('Erro no servidor. Tente novamente mais tarde.');
     }
   };
 

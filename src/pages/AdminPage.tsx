@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../supabase';
 import { Award, Clock, LogOut, Users as UsersIcon } from 'lucide-react';
 
 type QuizUser = {
@@ -16,43 +15,34 @@ const AdminPage: React.FC = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [users, setUsers] = useState<QuizUser[]>([]);
 
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/api/resultados');
+      const data = await response.json();
+      setUsers(data);
+    } catch (error) {
+      console.error('Erro ao buscar resultados:', error);
+    }
+  };
+
   useEffect(() => {
-    const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+    const isAdminAutenticado = localStorage.getItem('isAdmin') === 'true';
 
-      console.log('Sessão recuperada:', session); // Verifica se a sessão foi recuperada
-
-      if (!session) {
-        navigate('/login'); // Redireciona para login se não houver sessão
-      } else {
-        setIsAdmin(true);
-      }
-    };
-
-    checkSession();
+    if (!isAdminAutenticado) {
+      navigate('/login');
+    } else {
+      setIsAdmin(true);
+      fetchUsers();
+    }
   }, [navigate]);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const { data, error } = await supabase.from('usuariosne').select('*');
-      if (error) {
-        console.error('Erro ao buscar usuários:', error);
-      } else {
-        console.log('Usuários recuperados:', data); // Verifica os dados recuperados
-        setUsers(data || []);
-      }
-    };
-
-    fetchUsers();
-  }, []);
-
-  const handleLogout = async () => {
-    localStorage.removeItem('isAdmin'); // Remove o estado de autenticação
+  const handleLogout = () => {
+    localStorage.removeItem('isAdmin'); // remove token
     navigate('/login');
   };
 
   if (!isAdmin) {
-    return null; // Evita renderizar a página enquanto verifica a autenticação
+    return null; // Enquanto não carrega ou não é admin
   }
 
   return (
