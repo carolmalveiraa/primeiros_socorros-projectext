@@ -17,7 +17,7 @@ const LoginPage: React.FC = () => {
     }
 
     try {
-      fetch("http://localhost:3001/login", {
+      const res = await fetch("http://localhost:3001/login", {
         method: "POST",
         body: JSON.stringify({ username, password }),
         headers: {
@@ -33,7 +33,7 @@ const LoginPage: React.FC = () => {
       }
     
       sessionStorage.setItem('token', result.token);
-navigate('/admin');
+    navigate('/admin');
     } catch (error) {
       console.error('Erro ao fazer login:', error);
       setError('Erro no servidor. Tente novamente mais tarde.');

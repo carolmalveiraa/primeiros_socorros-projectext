@@ -10,10 +10,16 @@ type QuizUser = {
   avatar: string;
 };
 
-const AdminPage: React.FC = () => {
-  const navigate = useNavigate();
-  const [isAdmin, setIsAdmin] = useState(false);
+function formatTime(seconds: number) {
+  const min = Math.floor(seconds / 60);
+  const sec = seconds % 60;
+  return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+}
+
+const AdminPage = () => {
   const [users, setUsers] = useState<QuizUser[]>([]);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const navigate = useNavigate();
 
   const fetchUsers = async () => {
     try {
@@ -26,9 +32,8 @@ const AdminPage: React.FC = () => {
   };
 
   useEffect(() => {
-    const isAdminAutenticado = localStorage.getItem('isAdmin') === 'true';
-
-    if (!isAdminAutenticado) {
+    const token = sessionStorage.getItem('token');
+    if (!token) {
       navigate('/login');
     } else {
       setIsAdmin(true);
@@ -37,13 +42,26 @@ const AdminPage: React.FC = () => {
   }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem('isAdmin'); // remove token
+    sessionStorage.removeItem('token');
+    setIsAdmin(false);
     navigate('/login');
   };
 
   if (!isAdmin) {
-    return null; // Enquanto não carrega ou não é admin
+    return null;
   }
+
+  // Estatísticas
+  const avgScore =
+    users.length > 0
+      ? (users.reduce((acc, user) => acc + user.score, 0) / users.length).toFixed(1)
+      : '0';
+  const avgTime =
+    users.length > 0
+      ? formatTime(
+          Math.round(users.reduce((acc, user) => acc + user.timeSpent, 0) / users.length)
+        )
+      : '00:00';
 
   return (
     <div className="py-8 bg-gray-50 min-h-screen">
@@ -78,11 +96,7 @@ const AdminPage: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">Pontuação Média</p>
-                  <p className="text-2xl font-bold text-green-700">
-                    {users.length > 0
-                      ? (users.reduce((acc, user) => acc + user.score, 0) / users.length).toFixed(1)
-                      : '0'}
-                  </p>
+                  <p className="text-2xl font-bold text-green-700">{avgScore}</p>
                 </div>
               </div>
 
@@ -92,9 +106,46 @@ const AdminPage: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">Tempo Médio</p>
-                  <p className="text-2xl font-bold text-red-700">{'00:00'}</p>
+                  <p className="text-2xl font-bold text-red-700">{avgTime}</p>
                 </div>
               </div>
+            </div>
+
+            {/* Tabela de usuários */}
+            <div className="overflow-x-auto">
+              <table className="min-w-full bg-white border rounded-lg">
+                <thead>
+                  <tr>
+                    <th className="px-4 py-2 border-b">Avatar</th>
+                    <th className="px-4 py-2 border-b">Nome</th>
+                    <th className="px-4 py-2 border-b">Pontuação</th>
+                    <th className="px-4 py-2 border-b">Tempo Gasto</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.map((user) => (
+                    <tr key={user.id} className="hover:bg-gray-50">
+                      <td className="px-4 py-2 border-b text-center">
+                        <img
+                          src={user.avatar}
+                          alt={user.name}
+                          className="w-10 h-10 rounded-full mx-auto"
+                        />
+                      </td>
+                      <td className="px-4 py-2 border-b">{user.name}</td>
+                      <td className="px-4 py-2 border-b text-center">{user.score}</td>
+                      <td className="px-4 py-2 border-b text-center">{formatTime(user.timeSpent)}</td>
+                    </tr>
+                  ))}
+                  {users.length === 0 && (
+                    <tr>
+                      <td colSpan={4} className="text-center py-4 text-gray-500">
+                        Nenhum participante encontrado.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

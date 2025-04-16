@@ -269,39 +269,53 @@ const QuizPage: React.FC = () => {
     setIsTimerRunning(true);
   };
   
-  // Handle option selection
   const handleOptionSelect = (optionIndex: number) => {
     if (showFeedback) return; // Prevent selection during feedback
-    
+  
     setSelectedOption(optionIndex);
     setShowFeedback(true);
-    
+  
     const currentQuizQuestion = quizQuestions[currentQuestion];
     const isAnswerCorrect = optionIndex === currentQuizQuestion.correctAnswer;
-    
+  
     setIsCorrect(isAnswerCorrect);
-    
+  
     if (isAnswerCorrect) {
       playCorrectSound();
       setScore(prevScore => prevScore + 1);
     } else {
       playWrongSound();
     }
-    
+  
     // Update user score
     updateUserScore(isAnswerCorrect ? score + 1 : score);
-    
-    // Automatically move to next question after 2 seconds
+  
+    // Automaticamente avança ou finaliza o quiz após 2 segundos
     setTimeout(() => {
       if (currentQuestion < quizQuestions.length - 1) {
         setCurrentQuestion(prevQuestion => prevQuestion + 1);
         setSelectedOption(null);
         setShowFeedback(false);
       } else {
-        // Quiz completed
+        // Quiz finalizado
         setIsTimerRunning(false);
         updateUserTime(timer);
         setStage(QuizStage.Results);
+  
+        // Envia resultado para o backend
+        const userToSend = {
+          name: currentUser?.name || name,
+          avatar: currentUser?.avatar || selectedAvatar,
+          score: isAnswerCorrect ? score + 1 : score, // score final
+          timeSpent: timer
+        };
+        fetch('http://localhost:3001/api/resultados', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(userToSend)
+        });
       }
     }, 2000);
   };
