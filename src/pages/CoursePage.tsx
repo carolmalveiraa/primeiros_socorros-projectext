@@ -96,7 +96,7 @@ const CoursePage: React.FC = () => {
           
           <div className="flex justify-center">
             <img 
-              src="https://plus.unsplash.com/premium_photo-1663036305486-537dc7cf576b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+              src="https://alfredonegreirosadvocacia.adv.br/wp-content/uploads/2023/07/Acidente-de-Trabalho-Tudo-o-que-voce-precisa-saber-1.jpg" 
               alt="Avaliação de vítima" 
               className="rounded-lg shadow-md max-w-full h-auto"
             />
@@ -230,7 +230,7 @@ const CoursePage: React.FC = () => {
           
           <div className="flex justify-center">
             <img 
-              src="https://plus.unsplash.com/premium_photo-1663075891935-aabafda21a1e?q=80&w=2065&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+              src="https://blog.volkdobrasil.com.br/wp-content/uploads/2020/04/75934afinaloqueeconsideradoacidentedetrabalho.jpg" 
               alt="Atendimento de emergência" 
               className="rounded-lg shadow-md max-w-full h-auto"
             />
@@ -524,7 +524,7 @@ const CoursePage: React.FC = () => {
           
           <div className="flex justify-center">
             <img 
-              src="https://img.freepik.com/free-photo/people-with-home-safety-concept_53876-30626.jpg?t=st=1741207389~exp=1741210989~hmac=b52bbc62b34a736417523d4b33958239cb5a610e5410987d802ae0878c4d339a&w=1380" 
+              src="https://runnersworld.com.br/wp-content/uploads/sites/4/2019/06/fratura-por-estresse.jpg" 
               alt="Atendimento de emergência para lesões" 
               className="rounded-lg shadow-md max-w-full h-auto"
             />
@@ -734,7 +734,7 @@ const CoursePage: React.FC = () => {
           
           <div className="flex justify-center mt-6">
             <img 
-              src="https://img.freepik.com/free-photo/adult-woman-stressing-out-home_23-2148758704.jpg?t=st=1741207883~exp=1741211483~hmac=91b32154caa0888cf4c07c9d6e7056cbf7d4fd2e3805d325e86872feea8a4d9e&w=1380" 
+              src="https://drpaolorubez.com.br/wp-content/uploads/2020/12/tipos-de-enxaqueca-1000x600.jpg" 
               alt="Atendimento de emergência cardíaca" 
               className="rounded-lg shadow-md max-w-full h-auto"
             />
@@ -753,7 +753,7 @@ const CoursePage: React.FC = () => {
           
           <div className="flex justify-center mb-8">
             <img 
-              src="https://img.freepik.com/free-photo/toolbox-collection-high-angle-view-indoors-generated-by-ai_188544-20352.jpg?t=st=1741207963~exp=1741211563~hmac=f7a5655c3af08b5919368df4a3e477663a52eff3f69286bc3a8424c1e7c524f1&w=1800" 
+              src="https://static.wixstatic.com/media/1a1c95_0cff0f4e0d7242a4b7ea59cd404b592f~mv2.jpg/v1/crop/x_0,y_14,w_3040,h_1746/fill/w_518,h_358,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Sem%20t%C3%ADtulo-1.jpg" 
               alt="Kit de primeiros socorros" 
               className="rounded-lg shadow-md max-w-full h-auto"
             />
