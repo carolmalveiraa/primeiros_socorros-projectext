@@ -223,7 +223,7 @@ const QuizPage: React.FC = () => {
   
   // Sound effects
   const playCorrectSound = () => {
-    const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3');
+    const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/957/957-preview.mp3');
     audio.play();
   };
   
@@ -270,7 +270,7 @@ const QuizPage: React.FC = () => {
   };
   
   const handleOptionSelect = (optionIndex: number) => {
-    if (showFeedback) return; // Prevent selection during feedback
+    if (showFeedback) return;
   
     setSelectedOption(optionIndex);
     setShowFeedback(true);
@@ -342,9 +342,9 @@ const QuizPage: React.FC = () => {
   // Sort users by score (descending) and time (ascending)
   const sortedUsers = [...users].sort((a, b) => {
     if (b.score !== a.score) {
-      return b.score - a.score; // Higher score first
+      return b.score - a.score;
     }
-    return a.timeSpent - b.timeSpent; // Lower time first if scores are equal
+    return a.timeSpent - b.timeSpent;
   });
   
   // Render registration form
