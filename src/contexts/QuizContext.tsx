@@ -1,11 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-// Define types
 export interface QuizUser {
   name: string;
   avatar: string;
   score: number;
-  timeSpent: number; // in seconds
+  timeSpent: number;
 }
 
 interface QuizContextType {
@@ -16,58 +15,39 @@ interface QuizContextType {
   updateUserScore: (score: number) => void;
   updateUserTime: (time: number) => void;
   resetCurrentUser: () => void;
+  fetchUsers: () => void; // Adicionado
 }
 
-// Create context
 const QuizContext = createContext<QuizContextType | undefined>(undefined);
 
-// Provider component
 export const QuizProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [users, setUsers] = useState<QuizUser[]>([]);
   const [currentUser, setCurrentUser] = useState<QuizUser | null>(null);
 
-  // Load users from localStorage on initial render
+  // Buscar usuários do backend ao iniciar
   useEffect(() => {
-    const storedUsers = localStorage.getItem('quizUsers');
-    if (storedUsers) {
-      setUsers(JSON.parse(storedUsers));
-    }
+    fetchUsers();
   }, []);
 
-  // Save users to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem('quizUsers', JSON.stringify(users));
-  }, [users]);
+  const fetchUsers = () => {
+    fetch('http://localhost:3001/api/resultados')
+      .then(res => res.json())
+      .then(data => setUsers(data))
+      .catch(() => setUsers([]));
+  };
 
   const addUser = (user: QuizUser) => {
-    setUsers(prevUsers => [...prevUsers, user]);
     setCurrentUser(user);
   };
 
   const updateUserScore = (score: number) => {
     if (!currentUser) return;
-
-    const updatedUser = { ...currentUser, score };
-    setCurrentUser(updatedUser);
-
-    setUsers(prevUsers => 
-      prevUsers.map(user => 
-        user.name === currentUser.name ? updatedUser : user
-      )
-    );
+    setCurrentUser({ ...currentUser, score });
   };
 
   const updateUserTime = (time: number) => {
     if (!currentUser) return;
-
-    const updatedUser = { ...currentUser, timeSpent: time };
-    setCurrentUser(updatedUser);
-
-    setUsers(prevUsers => 
-      prevUsers.map(user => 
-        user.name === currentUser.name ? updatedUser : user
-      )
-    );
+    setCurrentUser({ ...currentUser, timeSpent: time });
   };
 
   const resetCurrentUser = () => {
@@ -75,15 +55,16 @@ export const QuizProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <QuizContext.Provider 
-      value={{ 
-        users, 
-        currentUser, 
-        setCurrentUser, 
-        addUser, 
-        updateUserScore, 
+    <QuizContext.Provider
+      value={{
+        users,
+        currentUser,
+        setCurrentUser,
+        addUser,
+        updateUserScore,
         updateUserTime,
-        resetCurrentUser
+        resetCurrentUser,
+        fetchUsers, // Adicionado
       }}
     >
       {children}
@@ -91,7 +72,6 @@ export const QuizProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 };
 
-// Custom hook to use the quiz context
 export const useQuiz = () => {
   const context = useContext(QuizContext);
   if (context === undefined) {

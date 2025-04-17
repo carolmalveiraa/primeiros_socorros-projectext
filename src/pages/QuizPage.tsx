@@ -208,7 +208,7 @@ enum QuizStage {
 }
 
 const QuizPage: React.FC = () => {
-  const { currentUser, addUser, updateUserScore, updateUserTime, users } = useQuiz();
+  const { currentUser, addUser, updateUserScore, updateUserTime, users, fetchUsers } = useQuiz();
   
   const [stage, setStage] = useState<QuizStage>(QuizStage.Registration);
   const [name, setName] = useState('');
@@ -271,42 +271,39 @@ const QuizPage: React.FC = () => {
   
   const handleOptionSelect = (optionIndex: number) => {
     if (showFeedback) return;
-  
+
     setSelectedOption(optionIndex);
     setShowFeedback(true);
-  
+
     const currentQuizQuestion = quizQuestions[currentQuestion];
     const isAnswerCorrect = optionIndex === currentQuizQuestion.correctAnswer;
-  
+
     setIsCorrect(isAnswerCorrect);
-  
+
     if (isAnswerCorrect) {
       playCorrectSound();
       setScore(prevScore => prevScore + 1);
     } else {
       playWrongSound();
     }
-  
-    // Update user score
+
     updateUserScore(isAnswerCorrect ? score + 1 : score);
-  
-    // Automaticamente avança ou finaliza o quiz após 2 segundos
+
     setTimeout(() => {
       if (currentQuestion < quizQuestions.length - 1) {
         setCurrentQuestion(prevQuestion => prevQuestion + 1);
         setSelectedOption(null);
         setShowFeedback(false);
       } else {
-        // Quiz finalizado
         setIsTimerRunning(false);
         updateUserTime(timer);
         setStage(QuizStage.Results);
-  
-        // Envia resultado para o backend
+
+        // Envia resultado para o backend e atualiza ranking
         const userToSend = {
           name: currentUser?.name || name,
           avatar: currentUser?.avatar || selectedAvatar,
-          score: isAnswerCorrect ? score + 1 : score, // score final
+          score: isAnswerCorrect ? score + 1 : score,
           timeSpent: timer
         };
         fetch('http://localhost:3001/api/resultados', {
@@ -315,11 +312,14 @@ const QuizPage: React.FC = () => {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(userToSend)
+        }).then(() => {
+          // Atualiza o ranking após salvar no backend
+          fetchUsers();
         });
       }
     }, 2000);
   };
-  
+
   // Format time (seconds to MM:SS)
   const formatTime = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60);
