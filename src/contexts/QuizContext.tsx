@@ -30,7 +30,7 @@ export const QuizProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const fetchUsers = () => {
-    fetch('http://localhost:3001/api/resultados')
+    fetch('http://localhost:3001/api/users')
       .then(res => res.json())
       .then(data => setUsers(data))
       .catch(() => setUsers([]));
