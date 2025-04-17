@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 export interface QuizUser {
+  id: number;
   name: string;
   avatar: string;
   score: number;
@@ -15,7 +16,7 @@ interface QuizContextType {
   updateUserScore: (score: number) => void;
   updateUserTime: (time: number) => void;
   resetCurrentUser: () => void;
-  fetchUsers: () => void; // Adicionado
+  fetchUsers: () => void;
 }
 
 const QuizContext = createContext<QuizContextType | undefined>(undefined);
@@ -30,7 +31,7 @@ export const QuizProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const fetchUsers = () => {
-    fetch('http://localhost:3001/api/users')
+    fetch('http://localhost:3001/api/resultados')
       .then(res => res.json())
       .then(data => setUsers(data))
       .catch(() => setUsers([]));
@@ -64,7 +65,7 @@ export const QuizProvider: React.FC<{ children: React.ReactNode }> = ({ children
         updateUserScore,
         updateUserTime,
         resetCurrentUser,
-        fetchUsers, // Adicionado
+        fetchUsers,
       }}
     >
       {children}
