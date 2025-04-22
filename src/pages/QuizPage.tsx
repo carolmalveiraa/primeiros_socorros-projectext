@@ -23,180 +23,183 @@ const avatarOptions = [
 const quizQuestions = [
   {
     id: 1,
-    question: "Qual é o número de telefone da Nordeste Emergências?",
-    options: ["1076-8766", "9161-8454", "8766-1076", "8187-4688"],
-    correctAnswer: 2,
-
-Answer: 2,
+    question: "Qual é o objetivo principal dos primeiros socorros?",
+    options: [
+      "Substituir o atendimento médico",
+      "Preservar a vida e evitar agravamento até a chegada de ajuda especializada",
+      "Realizar procedimentos avançados",
+      "Administrar medicamentos"
+    ],
+    correctAnswer: 1,
     difficulty: "Fácil"
   },
   {
     id: 2,
-    question: "Qual é a sequência correta para avaliação inicial de uma vítima?",
+    question: "Qual o primeiro passo ao encontrar uma vítima de acidente na empresa?",
     options: [
-      "ABCDE (Vias aéreas, Respiração, Circulação, Disfunção neurológica, Exposição)",
-      "DCBAE (Disfunção neurológica, Circulação, Respiração, Vias aéreas, Exposição)",
-      "CABDE (Circulação, Vias aéreas, Respiração, Disfunção neurológica, Exposição)",
-      "EDCBA (Exposição, Disfunção neurológica, Circulação, Respiração, Vias aéreas)"
+      "Verificar se a vítima está respirando",
+      "Chamar o serviço de emergência imediatamente",
+      "Certificar-se de que o local é seguro para agir",
+      "Tentar levantar a vítima"
     ],
-    correctAnswer: 0,
-    difficulty: "Médio"
+    correctAnswer: 2,
+    difficulty: "Fácil"
   },
   {
     id: 3,
-    question: "O que significa a sigla RCP?",
+    question: "O que deve ser feito em caso de desmaio (síncope)?",
     options: [
-      "Respiração Cardiopulmonar",
-      "Reanimação Cardiopulmonar",
-      "Recuperação Cardiopulmonar",
-      "Restauração Cardiopulmonar"
+      "Oferecer água imediatamente",
+      "Deitar a pessoa e elevar as pernas",
+      "Sacudir a vítima para acordar",
+      "Dar alimentos"
     ],
     correctAnswer: 1,
     difficulty: "Fácil"
   },
   {
     id: 4,
-    question: "Qual a frequência recomendada de compressões torácicas durante a RCP em adultos?",
+    question: "Em caso de convulsão, qual atitude está correta?",
     options: [
-      "60 a 80 compressões por minuto",
-      "80 a 100 compressões por minuto",
-      "100 a 120 compressões por minuto",
-      "120 a 140 compressões por minuto"
+      "Colocar objetos na boca da vítima",
+      "Tentar segurar os movimentos",
+      "Afastar objetos perigosos e proteger a cabeça",
+      "Dar água após a crise"
     ],
     correctAnswer: 2,
     difficulty: "Médio"
   },
   {
     id: 5,
-    question: "Qual a profundidade correta das compressões torácicas durante a RCP em adultos?",
+    question: "Qual procedimento NÃO deve ser feito em caso de queimadura?",
     options: [
-      "2 a 3 cm",
-      "3 a 4 cm",
-      "4 a 5 cm",
-      "5 a 6 cm"
-    ],
-    correctAnswer: 3,
-    difficulty: "Médio"
-  },
-  {
-    id: 6,
-    question: "O que NÃO deve ser feito em caso de queimadura?",
-    options: [
-      "Resfriar a área com água corrente em temperatura ambiente",
-      "Remover acessórios como anéis e pulseiras",
-      "Aplicar pasta de dente ou manteiga na área queimada",
-      "Cobrir a área com gaze ou pano limpo"
+      "Resfriar a área com água corrente",
+      "Cobrir com pano limpo e úmido",
+      "Aplicar pasta de dente ou manteiga",
+      "Retirar acessórios próximos à queimadura"
     ],
     correctAnswer: 2,
     difficulty: "Fácil"
   },
   {
-    id: 7,
-    question: "Qual o procedimento correto para controlar uma hemorragia externa?",
+    id: 6,
+    question: "Como agir diante de uma hemorragia externa?",
     options: [
-      "Aplicar torniquete imediatamente",
-      "Aplicar pressão direta sobre o ferimento",
-      "Elevar o membro afetado sem aplicar pressão",
-      "Aplicar compressas frias sem pressão direta"
+      "Pressionar o local com pano limpo",
+      "Lavar apenas com água",
+      "Esperar o sangramento parar sozinho",
+      "Colocar objetos sobre o ferimento"
     ],
-    correctAnswer: 1,
+    correctAnswer: 0,
+    difficulty: "Fácil"
+  },
+  {
+    id: 7,
+    question: "O que NÃO deve ser feito em caso de fratura?",
+    options: [
+      "Imobilizar o local sem tentar alinhar o osso",
+      "Cobrir fratura exposta com pano limpo",
+      "Tentar movimentar ou alinhar o osso",
+      "Acionar o serviço de emergência"
+    ],
+    correctAnswer: 2,
     difficulty: "Médio"
   },
   {
     id: 8,
-    question: "Quais são os sinais do AVC que podem ser identificados pelo acrônimo?",
+    question: "Qual a conduta correta em caso de engasgo com obstrução total das vias aéreas?",
     options: [
-      "Sorriso, Abraço, Movimento, Urgência",
-      "Sorriso, Abraço, Mensagem, Urgência",
-      "Sintoma, Alerta, Movimento, Urgência",
-      "Sintoma, Alerta, Mensagem, Urgência"
+      "Oferecer água",
+      "Realizar a manobra de Heimlich",
+      "Deitar a vítima",
+      "Esperar a vítima tossir"
     ],
     correctAnswer: 1,
-    difficulty: "Difícil"
-  },
-  {
-    id: 9,
-    question: "O que deve ser feito em caso de convulsão?",
-    options: [
-      "Segurar a língua da pessoa para evitar que ela a engula",
-      "Tentar conter os movimentos da pessoa",
-      "Colocar algo na boca da pessoa para evitar mordedura da língua",
-      "Afastar objetos perigosos e proteger a cabeça da pessoa"
-    ],
-    correctAnswer: 3,
     difficulty: "Médio"
   },
   {
-    id: 10,
-    question: "Qual é o procedimento correto para ajudar uma pessoa que está engasgada e não consegue falar, tossir ou respirar?",
+    id: 9,
+    question: "Na crise de asma, o que deve ser feito?",
     options: [
-      "Oferecer água para ajudar a desengasgar",
-      "Dar tapas nas costas apenas",
-      "Realizar a Manobra de Heimlich",
-      "Colocar a pessoa deitada e aguardar o socorro"
+      "Deitar a pessoa",
+      "Ajudar a usar a bombinha e manter a calma",
+      "Oferecer alimentos",
+      "Cobrir com cobertor"
     ],
-    correctAnswer: 2,
+    correctAnswer: 1,
+    difficulty: "Fácil"
+  },
+  {
+    id: 10,
+    question: "Quais são sinais clássicos de infarto?",
+    options: [
+      "Dor no peito, suor frio e falta de ar",
+      "Dor de cabeça e febre",
+      "Dor abdominal e vômito",
+      "Dor nas costas e tontura"
+    ],
+    correctAnswer: 0,
     difficulty: "Médio"
   },
   {
     id: 11,
-    question: "Em caso de suspeita de fratura, o que NÃO deve ser feito?",
+    question: "O que fazer em caso de suspeita de AVC?",
     options: [
-      "Imobilizar a área afetada",
-      "Tentar realinhar o osso",
-      "Aplicar gelo envolto em pano",
-      "Acionar o serviço de emergência"
+      "Deitar a pessoa com a cabeça levemente elevada e acionar emergência",
+      "Dar água e esperar melhorar",
+      "Levantar a vítima rapidamente",
+      "Oferecer medicamentos"
     ],
-    correctAnswer: 1,
+    correctAnswer: 0,
     difficulty: "Médio"
   },
   {
     id: 12,
-    question: "Qual é a posição recomendada para uma pessoa inconsciente que está respirando?",
+    question: "Qual item NÃO pode faltar no kit de primeiros socorros?",
     options: [
-      "Posição supina (de barriga para cima)",
-      "Posição prona (de barriga para baixo)",
-      "Posição lateral de segurança",
-      "Posição sentada com a cabeça entre os joelhos"
+      "Luvas descartáveis",
+      "Gaze estéril",
+      "Antisséptico",
+      "Todos os anteriores"
     ],
-    correctAnswer: 2,
-    difficulty: "Difícil"
+    correctAnswer: 3,
+    difficulty: "Fácil"
   },
   {
     id: 13,
-    question: "Quais são os sinais de um infarto que devem ser observados?",
+    question: "O que significa a sigla RCP?",
     options: [
-      "Apenas dor no peito",
-      "Dor no peito, falta de ar, sudorese fria e náuseas",
-      "Apenas dor no braço esquerdo",
-      "Dor de cabeça intensa e visão turva"
+      "Reanimação Cardiopulmonar",
+      "Recuperação Cardíaca Pulmonar",
+      "Reação Cardiopulmonar",
+      "Reanálise Cardiopulmonar"
     ],
-    correctAnswer: 1,
-    difficulty: "Médio"
+    correctAnswer: 0,
+    difficulty: "Fácil"
   },
   {
     id: 14,
-    question: "O que significa o acrônimo RICE, utilizado no tratamento inicial de lesões musculoesqueléticas?",
+    question: "Qual a frequência correta das compressões torácicas na RCP em adultos?",
     options: [
-      "Rest, Ice, Compression, Elevation (Repouso, Gelo, Compressão, Elevação)",
-      "Rest, Immobilization, Cold, Exercise (Repouso, Imobilização, Frio, Exercício)",
-      "Recovery, Ice, Care, Evaluation (Recuperação, Gelo, Cuidado, Avaliação)",
-      "Rest, Isolation, Compression, Examination (Repouso, Isolamento, Compressão, Exame)"
+      "60 a 80 por minuto",
+      "80 a 100 por minuto",
+      "100 a 120 por minuto",
+      "120 a 140 por minuto"
     ],
-    correctAnswer: 0,
-    difficulty: "Difícil"
+    correctAnswer: 2,
+    difficulty: "Médio"
   },
   {
     id: 15,
-    question: "Qual é a conduta correta em caso de queimadura química?",
+    question: "Em caso de hiperventilação, o que NÃO deve ser feito?",
     options: [
-      "Neutralizar o produto químico com outra substância",
-      "Aplicar pomada antes de lavar a área afetada",
-      "Lavar a área com água corrente em abundância por pelo menos 20 minutos",
-      "Cobrir imediatamente a área sem lavar"
+      "Levar a pessoa para local calmo",
+      "Orientar respiração lenta",
+      "Usar saco de papel",
+      "Acalmar a vítima"
     ],
     correctAnswer: 2,
-    difficulty: "Difícil"
+    difficulty: "Médio"
   }
 ];
 

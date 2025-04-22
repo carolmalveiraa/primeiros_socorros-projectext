@@ -1,10 +1,9 @@
 import React from 'react';
-import { Heart } from 'lucide-react';
 import { FaGithub, FaInstagram, FaLinkedin, FaWhatsapp, FaPhone} from 'react-icons/fa';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-blue-500 text-white py-8">
+    <footer className="bg-gradient-to-r from-blue-900 via-blue-700 to-blue-500 text-white py-8">
       <div className="container-custom">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className='text-center'>
@@ -48,10 +47,12 @@ const Footer: React.FC = () => {
             </ul>
       </div>
         
-        <div className="mt-4 pt-6 border-t border-blue-400 text-center">
-            <p className="flex items-center justify-center text-sm">
-            Desenvolvido com <a href="https://www.nordesteemergencias.com.br/" className="underline text-white">&nbsp;Nordeste Emergências&nbsp; </a> por Carol Malveira - 2025 &reg;
-            </p>
+        <div className="mt-8 pt-6 border-t border-blue-400">
+          <div className="flex items-center justify-center space-x-2">
+              <p className="flex items-center justify-center text-sm">
+              Desenvolvido com <a href="https://www.nordesteemergencias.com.br/" className="underline text-white">&nbsp;Nordeste Emergências&nbsp; </a> por Carol Malveira - 2025 &reg;
+              </p>
+          </div>
         </div>
       </div>
     </footer>
