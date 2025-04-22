@@ -53,7 +53,7 @@ const AdminPage = () => {
   const handleDelete = async (id: number) => {
     const confirm = window.confirm('Tem certeza que deseja excluir este usuário/recorde?');
     if (!confirm) return;
-
+  
     await fetch(`http://localhost:3001/api/resultados/${id}`, { method: 'DELETE' });
     fetchUsers();
   };
@@ -71,13 +71,26 @@ const AdminPage = () => {
   };
 
   const handleSave = async (id: number) => {
+    const user = users.find(u => u.id === id);
+    if (!user) return;
+
+    const updatedUser = {
+      name: editName,
+      avatar: editAvatar,
+      score: user.score,
+      timeSpent: user.timeSpent,
+    };
+
     await fetch(`http://localhost:3001/api/resultados/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: editName, avatar: editAvatar }),
+      body: JSON.stringify(updatedUser),
     });
-    cancelEdit();
-    fetchUsers();
+
+    setEditId(null);
+    setEditName('');
+    setEditAvatar('');
+    fetchUsers(); // Atualiza a lista
   };
 
   if (!isAdmin) return null;
@@ -131,11 +144,11 @@ const AdminPage = () => {
                     return (
                       <tr key={user.id} className="hover:bg-gray-50">
                         <td className="px-4 py-2 border-b text-center">
-                          {isEditing ? (
+                          {editId === user.id ? (
                             <div>
                               <select
                                 value={editAvatar}
-                                onChange={(e) => setEditAvatar(e.target.value)}
+                                onChange={e => setEditAvatar(e.target.value)}
                                 className="border rounded px-2 mb-2"
                               >
                                 <option value="https://api.dicebear.com/7.x/adventurer/svg?seed=Amaya">Avatar 1</option>
@@ -143,10 +156,20 @@ const AdminPage = () => {
                                 <option value="https://api.dicebear.com/7.x/adventurer/svg?seed=Chase">Avatar 3</option>
                                 <option value="https://api.dicebear.com/7.x/adventurer/svg?seed=Sara">Avatar 4</option>
                               </select>
-                              <img src={editAvatar} className="w-10 h-10 rounded-full mx-auto" />
+                              <div>
+                                <img
+                                  src={editAvatar}
+                                  alt="Avatar selecionado"
+                                  className="w-10 h-10 rounded-full mx-auto"
+                                />
+                              </div>
                             </div>
                           ) : (
-                            <img src={user.avatar} className="w-10 h-10 rounded-full mx-auto" />
+                            <img
+                              src={user.avatar}
+                              alt={user.name}
+                              className="w-10 h-10 rounded-full mx-auto"
+                            />
                           )}
                         </td>
                         <td className="px-4 py-2 border-b">
