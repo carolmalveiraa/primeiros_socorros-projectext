@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
-import logoNordeste from '../assets/logo-nordeste.png';
+import logoNordeste from '../assets/Nordeste Emergências.png';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,7 +15,7 @@ const Navbar: React.FC = () => {
       <div className="container-custom py-4">
         <div className="flex justify-between items-center">
           <NavLink to="/" className="flex items-center space-x-2">
-          <img src="/Nordeste Emergências.png" alt="Logo Nordeste" className="h-16" />
+          <img src={logoNordeste} alt="Logo Nordeste" className="h-16" />
             <span className="text-xl font-bold text-white">Primeiros Socorros</span>
           </NavLink>
 

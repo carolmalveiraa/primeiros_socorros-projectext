@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { CheckCircle, HeartPulse, Shield } from "lucide-react";
+import logoNordeste from '../assets/Nordeste Emergências.png';
 
 const clientes = [
   { src: "https://upload.wikimedia.org/wikipedia/commons/5/51/Logo_petrobras.gif", alt: "Petrobras" },
@@ -120,7 +121,7 @@ const HomePage: React.FC = () => {
           <div className="bg-blue-50 p-4 rounded-lg shadow-md mb-12">
             <div className="flex flex-col items-center mb-4">
               <img
-                src="/Nordeste Emergências.png"
+                src={logoNordeste}
                 alt="Logo Nordeste Emergências"
                 className="mx-auto mb-4 w-32 h-auto"
                 loading="lazy"
