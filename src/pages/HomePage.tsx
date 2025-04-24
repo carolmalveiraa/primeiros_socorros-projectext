@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { CheckCircle, HeartPulse, Shield } from "lucide-react";
 import logoNordeste from '../assets/Nordeste Emergências.png';
@@ -9,19 +9,61 @@ const clientes = [
   { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/EDP_logo.svg/1200px-EDP_logo.svg.png", alt: "EDP" },
   { src: "https://www.complexodopecem.com.br/wp-content/uploads/2020/03/bitmap.png", alt: "Complexo do Pecém" },
   { src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf4HFjm89539gZsBVyQGTpqYee1u4YdqcXzw&s", alt: "CSP" },
-  { src: "https://logodownload.org/wp-content/uploads/2020/05/vli-logistica-logo-0.png", alt: "VL! Logística" },
+  { src: "https://www.vli-logistica.com.br/wp-content/uploads/2021/12/Logo_VLI.svg", alt: "VL! Logística" },
   { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Enel_Group_logo.svg/2560px-Enel_Group_logo.svg.png", alt: "Enel" },
   { src: "https://www.sbdc.com.br/wp-content/uploads/2021/08/LogoCarreiras.png", alt: "Eneva" },
   { src: "https://investidorsardinha.r7.com/wp-content/uploads/2020/11/ipo-da-aeris-12.png", alt: "Aeris" },
   { src: "https://tecerterminais.com.br/wp-content/uploads/2024/04/tecer-logo-new.png", alt: "Tecer" },
-  { src: "https://www.aecipp.com.br/sites/default/files/associados/logo/associados_unilink.png", alt: "Unilink" },
+  { src: "https://unilinktransportes.com.br/wp-content/uploads/2022/06/SELO-UNILINK-ISO-9001.png", alt: "Unilink" },
   { src: "https://upload.wikimedia.org/wikipedia/fi/2/2c/APM_Terminals_logo.png", alt: "APM Terminals" },
   { src: "https://cdn.prod.website-files.com/641d7fbf3061b9ecd473b5af/644aab6f9633969151ee8bbb_Governo%20do%20Estado%20do%20Ceara%CC%81_.webp", alt: "Governo do Estado do Ceará" },
   { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Bras%C3%A3o_de_Fortaleza.svg/800px-Bras%C3%A3o_de_Fortaleza.svg.png", alt: "Prefeitura de Fortaleza" },
 ];
 
+const galeriaProcedimentos = [
+  {
+    src: "https://static.wixstatic.com/media/15b2f2_0caf3aeed0554f65bb0814090301e6a6~mv2.jpg/v1/fill/w_1960,h_1600,q_90,enc_avif,quality_auto/15b2f2_0caf3aeed0554f65bb0814090301e6a6~mv2.jpg",
+    alt: "Veículos de Emergência"
+  },
+  {
+    src: "https://static.wixstatic.com/media/15b2f2_6abe59584b3d440c9ccef80f49036d5f~mv2.jpg/v1/fill/w_1960,h_1600,q_90,enc_avif,quality_auto/15b2f2_6abe59584b3d440c9ccef80f49036d5f~mv2.jpg",
+    alt: "Procedimento"
+  },
+  {
+    src: "https://static.wixstatic.com/media/15b2f2_daa0747d4d8c49ac9bf8832c39ec59af~mv2.jpg/v1/fill/w_1960,h_1600,q_90,enc_avif,quality_auto/15b2f2_daa0747d4d8c49ac9bf8832c39ec59af~mv2.jpg",
+    alt: "Colaboradores"
+  },
+];
 
 const HomePage: React.FC = () => {
+  const [currentImage, setCurrentImage] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % galeriaProcedimentos.length);
+    }, 4000); // 4 segundos
+    return () => clearInterval(interval);
+  }, []);
+
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<null | "success" | "error">(null);
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus(null);
+    const res = await fetch("https://formspree.io/f/xwpokjgp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    if (res.ok) {
+      setStatus("success");
+      setEmail("");
+    } else {
+      setStatus("error");
+    }
+  };
+
   return (
     <main className="bg-white">
       {/* Hero Section */}
@@ -52,7 +94,7 @@ const HomePage: React.FC = () => {
         </div>
 
       </section>
-      
+
       {/* Projeto de Extensão */}
       <section className="py-16 bg-gradient-to-r from-blue-900 via-blue-700 to-blue-500">
         <div className="container-custom max-w-4xl mx-auto">
@@ -76,13 +118,13 @@ const HomePage: React.FC = () => {
       <section className="py-10">
         <div className="container-custom">
           <h2 className="text-2xl font-bold text-center text-blue-900 mb-8">Principais Clientes</h2>
-          <div className="flex flex-wrap justify-center gap-8 items-center">
+          <div className="flex flex-wrap justify-center gap-6 items-center">
             {clientes.map((cliente, idx) => (
               <img
                 key={idx}
                 src={cliente.src}
                 alt={cliente.alt}
-                className="h-16 w-auto grayscale hover:grayscale-0 transition"
+                className="h-12 w-auto grayscale hover:grayscale-0 transition"
                 loading="lazy"
               />
             ))}
@@ -200,25 +242,24 @@ const HomePage: React.FC = () => {
       {/* Galeria de Procedimentos */}
       <section className="py-8">
         <div className="container-custom">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          <div className="relative w-full max-w-5xl mx-auto">
             <img
-              src="https://static.wixstatic.com/media/15b2f2_0caf3aeed0554f65bb0814090301e6a6~mv2.jpg/v1/fill/w_1960,h_1600,q_90,enc_avif,quality_auto/15b2f2_0caf3aeed0554f65bb0814090301e6a6~mv2.jpg"
-              alt="Veículos de Emergência"
-              className="rounded-lg shadow-lg object-cover w-full h-64"
+              src={galeriaProcedimentos[currentImage].src}
+              alt={galeriaProcedimentos[currentImage].alt}
+              className="rounded-lg shadow-lg object-cover w-full h-[420px] transition-all duration-700"
               loading="lazy"
             />
-            <img
-              src="https://static.wixstatic.com/media/15b2f2_6abe59584b3d440c9ccef80f49036d5f~mv2.jpg/v1/fill/w_1960,h_1600,q_90,enc_avif,quality_auto/15b2f2_6abe59584b3d440c9ccef80f49036d5f~mv2.jpg"
-              alt="Procedimento"
-              className="rounded-lg shadow-lg object-cover w-full h-64"
-              loading="lazy"
-            />
-            <img
-              src="https://static.wixstatic.com/media/15b2f2_daa0747d4d8c49ac9bf8832c39ec59af~mv2.jpg/v1/fill/w_1960,h_1600,q_90,enc_avif,quality_auto/15b2f2_daa0747d4d8c49ac9bf8832c39ec59af~mv2.jpg"
-              alt="Colaboradores"
-              className="rounded-lg shadow-lg object-cover w-full h-64"
-              loading="lazy"
-            />
+            {/* Indicadores */}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+              {galeriaProcedimentos.map((_, idx) => (
+                <button
+                  key={idx}
+                  className={`w-3 h-3 rounded-full ${idx === currentImage ? "bg-blue-600" : "bg-blue-200"} border border-white`}
+                  onClick={() => setCurrentImage(idx)}
+                  aria-label={`Ir para imagem ${idx + 1}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -237,6 +278,83 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
+      {/* Newsletter Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container-custom max-w-xl mx-auto text-center">
+          <h2 className="text-4xl font-bold text-blue-600 mb-2">Receba nossa newsletter</h2>
+          <p className="mb-8 text-gray-600">Cadastre seu e-mail e receba novidades sobre a nossa empresa.</p>
+          <form onSubmit={handleNewsletterSubmit} className="space-y-4">
+            <input
+              type="email"
+              required
+              placeholder="Insira o seu email aqui*"
+              className="w-full px-4 py-3 border-b-2 border-gray-400 focus:outline-none focus:border-blue-600 bg-transparent text-gray-800 text-lg"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+            />
+            <button
+              type="submit"
+              className="w-full bg-red-600 text-white font-semibold py-3 rounded transition hover:bg-red-700"
+            >
+              Participar
+            </button>
+            {status === "success" && (
+              <p className="text-green-600 mt-2">E-mail cadastrado com sucesso!</p>
+            )}
+            {status === "error" && (
+              <p className="text-red-600 mt-2">Erro ao cadastrar. Tente novamente.</p>
+            )}
+          </form>
+        </div>
+      </section>
+
+      {/* Contato Section */}
+      <section className="py-10 bg-blue-900 text-white">
+        <div className="container-custom max-w-2xl mx-auto">
+          <div className="space-y-8">
+            <div>
+              <h3 className="text-lg font-bold mb-1 underline">Unidade 1</h3>
+              <div className="flex flex-col md:flex-row md:items-center gap-2">
+                <span className="flex items-center">
+                  <span className="mr-2">📍</span>
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=Rodovia+CE-090,+2521+-+Jardim+Icaraí,+Caucaia+-+Ceará,+61621-455"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline"
+                  >
+                    Rodovia CE-090, 2521 - Jardim Icaraí, Caucaia - Ceará, 61621-455
+                  </a>
+                </span>
+                <span className="flex items-center ml-0 md:ml-6">
+                  <span className="mr-2">📞</span>
+                  Tel: (85) 3387-1950
+                </span>
+              </div>
+            </div>
+            <div>
+              <h3 className="text-lg font-bold mb-1 underline">Unidade 2</h3>
+              <div className="flex flex-col md:flex-row md:items-center gap-2">
+                <span className="flex items-center">
+                  <span className="mr-2">📍</span>
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=Rua+Desembargador+Milton+Figueiredo+Ferreira+Mendes,+80+-+Jardim+Petrópolis,+Cuiabá+-+Mato+Grosso,+78070-015"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline"
+                  >
+                    Rua Desembargador Milton Figueiredo Ferreira Mendes, 80 - Jardim Petrópolis, Cuiabá - Mato Grosso, 78070-015
+                  </a>
+                </span>
+                <span className="flex items-center ml-0 md:ml-6">
+                  <span className="mr-2">📞</span>
+                  Tel: 4007-2286
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   );
 };
