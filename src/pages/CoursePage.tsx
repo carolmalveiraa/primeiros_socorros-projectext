@@ -37,7 +37,7 @@ const CoursePage: React.FC = () => {
           <div className="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500">
             <h4 className="font-semibold text-yellow-700 mb-2">Situações comuns na base</h4>
             <ul className="list-disc pl-5 space-y-1">
-              <li>Quedas nas escadas do prédio (administração, diretoria, RH, etc.)</li>
+              <li>Quedas nas escadas do prédio (administração, diretoria, etc.)</li>
               <li>Cortes ou ferimentos no almoxarifado ou farmácia</li>
               <li>Mal súbito no setor financeiro, comercial ou refeitório</li>
               <li>Acidentes com veículos da frota</li>
@@ -206,7 +206,7 @@ const CoursePage: React.FC = () => {
           <div className="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
             <strong>Situações comuns na base:</strong>
             <ul className="list-disc pl-5 mt-2">
-              <li>Queda nas escadas do prédio (administração, diretoria, RH, etc).</li>
+              <li>Queda nas escadas do prédio (administração, diretoria, etc).</li>
               <li>Mal súbito no setor financeiro ou comercial.</li>
               <li>Colaborador da farmácia ou almoxarifado encontrado desacordado.</li>
               <li>Motorista da frota passando mal no estacionamento.</li>

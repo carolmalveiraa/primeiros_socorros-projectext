@@ -309,13 +309,15 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Contato Section */}
-      <section className="py-10 bg-blue-900 text-white">
+      {/* Contato Section */}
+      <section className="py-10 bg-gradient-to-r from-blue-900 via-blue-700 to-blue-500 text-white">
         <div className="container-custom max-w-2xl mx-auto">
+          <h2 className="text-4xl font-bold mb-2 text-center">Para mais informações:</h2>
           <div className="space-y-8">
-            <div>
+            <div className="text-center">
               <h3 className="text-lg font-bold mb-1 underline">Unidade 1</h3>
-              <div className="flex flex-col md:flex-row md:items-center gap-2">
-                <span className="flex items-center">
+              <div className="flex flex-col items-center gap-2">
+                <span className="flex items-center justify-center">
                   <span className="mr-2">📍</span>
                   <a
                     href="https://www.google.com/maps/search/?api=1&query=Rodovia+CE-090,+2521+-+Jardim+Icaraí,+Caucaia+-+Ceará,+61621-455"
@@ -326,16 +328,16 @@ const HomePage: React.FC = () => {
                     Rodovia CE-090, 2521 - Jardim Icaraí, Caucaia - Ceará, 61621-455
                   </a>
                 </span>
-                <span className="flex items-center ml-0 md:ml-6">
+                <span className="flex items-center justify-center">
                   <span className="mr-2">📞</span>
                   Tel: (85) 3387-1950
                 </span>
               </div>
             </div>
-            <div>
+            <div className="text-center">
               <h3 className="text-lg font-bold mb-1 underline">Unidade 2</h3>
-              <div className="flex flex-col md:flex-row md:items-center gap-2">
-                <span className="flex items-center">
+              <div className="flex flex-col items-center gap-2">
+                <span className="flex items-center justify-center">
                   <span className="mr-2">📍</span>
                   <a
                     href="https://www.google.com/maps/search/?api=1&query=Rua+Desembargador+Milton+Figueiredo+Ferreira+Mendes,+80+-+Jardim+Petrópolis,+Cuiabá+-+Mato+Grosso,+78070-015"
@@ -346,7 +348,7 @@ const HomePage: React.FC = () => {
                     Rua Desembargador Milton Figueiredo Ferreira Mendes, 80 - Jardim Petrópolis, Cuiabá - Mato Grosso, 78070-015
                   </a>
                 </span>
-                <span className="flex items-center ml-0 md:ml-6">
+                <span className="flex items-center justify-center">
                   <span className="mr-2">📞</span>
                   Tel: 4007-2286
                 </span>
