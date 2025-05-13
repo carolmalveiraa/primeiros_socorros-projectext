@@ -17,7 +17,7 @@ const LoginPage: React.FC = () => {
     }
 
     try {
-      const res = await fetch('http://localhost:3001/api/login', {
+      const res = await fetch('http://localhost:3001/api/auth/login', {
         method: "POST",
         body: JSON.stringify({ username, password }),
         headers: {
