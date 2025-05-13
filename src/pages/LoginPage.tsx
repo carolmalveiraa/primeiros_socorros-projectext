@@ -102,4 +102,34 @@ const LoginPage = () => {
   );
 };
 
+// No LoginPage.tsx ou componente equivalente
+const handleLogin = async (e) => {
+  e.preventDefault();
+  
+  try {
+    const response = await fetch('http://localhost:3001/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password
+      })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      sessionStorage.setItem('token', data.token);
+      navigate('/admin'); // ou para onde você quer redirecionar após login
+    } else {
+      setError('Credenciais inválidas');
+    }
+  } catch (error) {
+    console.error('Erro ao fazer login:', error);
+    setError('Erro no servidor. Tente novamente mais tarde.');
+  }
+};
+
 export default LoginPage;
