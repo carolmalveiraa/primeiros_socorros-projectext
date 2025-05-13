@@ -24,15 +24,15 @@ const AdminPage = () => {
   const [editAvatar, setEditAvatar] = useState('');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = sessionStorage.getItem('token');
-    if (!token) {
-      navigate('/login');
-    } else {
-      setIsAdmin(true);
-      fetchUsers();
-    }
-  }, [navigate]);
+useEffect(() => {
+  const token = sessionStorage.getItem('token');
+  if (!token) {
+    navigate('/login');
+  } else {
+    setIsAdmin(true);
+    fetchUsers();
+  }
+}, [navigate]);
 
   const fetchUsers = async () => {
     try {
