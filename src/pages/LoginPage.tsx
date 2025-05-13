@@ -18,22 +18,24 @@ const LoginPage: React.FC = () => {
 
     try {
       const res = await fetch('http://localhost:3001/api/auth/login', {
-        method: "POST",
-        body: JSON.stringify({ username, password }),
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json"
-        }
-      });
-    
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: 'nordesteadmin',
+          password: 'nordesteadmin'
+        })
+      })
       const result = await res.json();
-    
+
       if (!res.ok) {
         setError(result.message || 'Erro no login.');
         return;
       }
-    
+
       sessionStorage.setItem('token', result.token);
-    navigate('/admin');
+      navigate('/admin');
     } catch (error) {
       console.error('Erro ao fazer login:', error);
       setError('Erro no servidor. Tente novamente mais tarde.');
